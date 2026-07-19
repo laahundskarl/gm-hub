@@ -1,0 +1,6 @@
+{
+  "nav": { "feed": "My feed", "news": "News", "teams": "Teams", "players": "Players", "freeAgents": "Free Agents", "settings": "Settings" },
+  "auth": { "login": "Sign in", "signup": "Sign up", "logout": "Sign out", "email": "Email", "password": "Password", "name": "Name", "google": "Continue with Google", "loginError": "Invalid email or password", "signupError": "Could not create the account" },
+  "home": { "title": "NBA Front Office Hub", "tagline": "NBA news, rumors and financial context in one place" },
+  "common": { "loading": "Loading…", "loadMore": "Load more", "empty": "Nothing here yet", "unofficialData": "Unofficial financial data", "save": "Save", "cancel": "Cancel", "search": "Search" }
+}

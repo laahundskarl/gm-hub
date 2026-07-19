@@ -91,12 +91,12 @@ nba-front-office-hub/
 
 Estas etapas exigem contas/consoles e não podem ser automatizadas. Sem elas, as tarefas 2+ não rodam.
 
-- [ ] **Supabase:** criar projeto free em https://supabase.com (região `us-east-1`). Anotar: URL do projeto, `anon key`, `service_role key` e a senha do banco (Settings → Database).
-- [ ] **Supabase Auth:** em Authentication → Providers, deixar Email habilitado e **desativar "Confirm email"** (simplifica o MVP; reativar quando houver domínio de e-mail próprio). Configurar Google OAuth depois da Tarefa 4 (precisa de client ID/secret do Google Cloud Console) — e-mail/senha funciona antes disso.
-- [ ] **balldontlie:** criar conta free em https://www.balldontlie.io e anotar a API key.
-- [ ] **GitHub:** criar repositório `nba-front-office-hub` (público recomendado — Actions ilimitado) e fazer push do repo local. Em Settings → Secrets and variables → Actions, criar secrets: `DATABASE_URL`, `DIRECT_URL`, `BALLDONTLIE_API_KEY`.
-- [ ] **Vercel:** criar conta Hobby ligada ao GitHub (o deploy em si é a Tarefa 24).
-- [ ] Criar `.env` local (nunca commitado) a partir do `.env.example` da Tarefa 2.
+- [X] **Supabase:** criar projeto free em https://supabase.com (região `us-east-1`). Anotar: URL do projeto, `anon key`, `service_role key` e a senha do banco (Settings → Database).
+- [X] **Supabase Auth:** em Authentication → Providers, deixar Email habilitado e **desativar "Confirm email"** (simplifica o MVP; reativar quando houver domínio de e-mail próprio). Configurar Google OAuth depois da Tarefa 4 (precisa de client ID/secret do Google Cloud Console) — e-mail/senha funciona antes disso.
+- [X] **balldontlie:** criar conta free em https://www.balldontlie.io e anotar a API key.
+- [X] **GitHub:** criar repositório `gm-hub` (público recomendado — Actions ilimitado) e fazer push do repo local. Em Settings → Secrets and variables → Actions, criar secrets: `DATABASE_URL`, `DIRECT_URL`, `BALLDONTLIE_API_KEY`.
+- [X] **Vercel:** criar conta Hobby ligada ao GitHub (o deploy em si é a Tarefa 24).
+- [X] Criar `.env` local (nunca commitado) a partir do `.env.example` da Tarefa 2.
 
 ---
 
