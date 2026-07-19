@@ -25,7 +25,8 @@ export default function SignupPage() {
       options: { data: { name } },
     })
     if (error || !data.user) return setError(true)
-    await fetch('/api/profile', { method: 'POST' })
+    const res = await fetch('/api/profile', { method: 'POST' })
+    if (!res.ok) return setError(true)
     router.push('/onboarding')
     router.refresh()
   }
