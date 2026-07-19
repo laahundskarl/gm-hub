@@ -9,6 +9,7 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     include: ['**/*.test.{ts,tsx}'],
     exclude: ['node_modules', 'e2e'],
+    server: { deps: { inline: [/next-intl/, /^next$/, /^next\//] } },
   },
   resolve: { alias: { '@': path.resolve(__dirname, '.') } },
 })

@@ -2,5 +2,5 @@
   "nav": { "feed": "Meu feed", "news": "Notícias", "teams": "Times", "players": "Jogadores", "freeAgents": "Free Agents", "settings": "Configurações" },
   "auth": { "login": "Entrar", "signup": "Criar conta", "logout": "Sair", "email": "E-mail", "password": "Senha", "name": "Nome", "google": "Continuar com Google", "loginError": "E-mail ou senha inválidos", "signupError": "Não foi possível criar a conta" },
   "home": { "title": "NBA Front Office Hub", "tagline": "Notícias, rumores e contexto financeiro da NBA em um só lugar" },
-  "common": { "loading": "Carregando…", "loadMore": "Carregar mais", "empty": "Nada por aqui ainda", "unofficialData": "Dados financeiros não oficiais", "save": "Salvar", "cancel": "Cancelar", "search": "Buscar" }
+  "common": { "loading": "Carregando…", "loadMore": "Carregar mais", "empty": "Nada por aqui ainda", "unofficialData": "Dados financeiros não oficiais", "save": "Salvar", "cancel": "Cancelar", "search": "Buscar", "errorTitle": "Algo deu errado", "retry": "Tentar de novo" }
 }
