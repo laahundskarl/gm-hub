@@ -1,0 +1,6 @@
+{
+  "data": [
+    { "id": 237, "first_name": "LeBron", "last_name": "James", "position": "F", "height": "6-9", "weight": "250", "jersey_number": "23", "team": { "id": 14 } },
+    { "id": 999001, "first_name": "Sem", "last_name": "Time", "position": null, "height": null, "weight": null, "jersey_number": null, "team": null }
+  ]
+}

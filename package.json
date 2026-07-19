@@ -10,7 +10,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate",
-    "seed:teams": "dotenv -- tsx ingestion/seed-teams.ts"
+    "seed:teams": "dotenv -- tsx ingestion/seed-teams.ts",
+    "sync:players": "dotenv -- tsx ingestion/sync-players.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

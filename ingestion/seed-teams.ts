@@ -10,4 +10,6 @@ async function main() {
   console.log(`seed-teams: ${teams.length} times upserted`)
 }
 
-main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1) })
+if (process.argv[1]?.endsWith('seed-teams.ts')) {
+  main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1) })
+}
