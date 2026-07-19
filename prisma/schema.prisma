@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Profile {
+  id              String               @id @db.Uuid
+  name            String
+  avatarUrl       String?              @map("avatar_url")
+  language        String               @default("pt-BR")
+  createdAt       DateTime             @default(now()) @map("created_at")
+  favoriteTeams   UserFavoriteTeam[]
+  favoritePlayers UserFavoritePlayer[]
+
+  @@map("profiles")
+}
+
+model Team {
+  id           Int                @id @default(autoincrement())
+  nbaId        Int                @unique @map("nba_id")
+  name         String
+  fullName     String             @map("full_name")
+  abbreviation String             @unique
+  conference   String
+  division     String
+  logoUrl      String?            @map("logo_url")
+  players      Player[]
+  contracts    Contract[]
+  favorites    UserFavoriteTeam[]
+  newsTags     NewsTag[]
+
+  @@map("teams")
+}
+
+model Player {
+  id        Int                  @id @default(autoincrement())
+  nbaId     Int                  @unique @map("nba_id")
+  firstName String               @map("first_name")
+  lastName  String               @map("last_name")
+  position  String?
+  jersey    String?
+  height    String?
+  weight    String?
+  teamId    Int?                 @map("team_id")
+  team      Team?                @relation(fields: [teamId], references: [id])
+  contracts Contract[]
+  favorites UserFavoritePlayer[]
+  newsTags  NewsTag[]
+
+  @@map("players")
+}
+
+model UserFavoriteTeam {
+  id      Int     @id @default(autoincrement())
+  userId  String  @map("user_id") @db.Uuid
+  teamId  Int     @map("team_id")
+  profile Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team    Team    @relation(fields: [teamId], references: [id])
+
+  @@unique([userId, teamId])
+  @@map("user_favorite_teams")
+}
+
+model UserFavoritePlayer {
+  id       Int     @id @default(autoincrement())
+  userId   String  @map("user_id") @db.Uuid
+  playerId Int     @map("player_id")
+  profile  Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  player   Player  @relation(fields: [playerId], references: [id])
+
+  @@unique([userId, playerId])
+  @@map("user_favorite_players")
+}
+
+model Contract {
+  id               Int     @id @default(autoincrement())
+  playerId         Int     @map("player_id")
+  teamId           Int     @map("team_id")
+  startSeason      Int     @map("start_season")
+  endSeason        Int     @map("end_season")
+  salariesBySeason Json    @map("salaries_by_season")
+  optionType       String? @map("option_type")
+  player           Player  @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  team             Team    @relation(fields: [teamId], references: [id])
+
+  @@unique([playerId, startSeason])
+  @@index([teamId])
+  @@index([endSeason])
+  @@map("contracts")
+}
+
+model CapSeason {
+  season      Int    @id
+  capAmount   BigInt @map("cap_amount")
+  taxLine     BigInt @map("tax_line")
+  firstApron  BigInt @map("first_apron")
+  secondApron BigInt @map("second_apron")
+
+  @@map("cap_seasons")
+}
+
+model NewsItem {
+  id          Int       @id @default(autoincrement())
+  source      String
+  externalId  String?   @map("external_id")
+  url         String
+  title       String
+  excerpt     String?
+  imageUrl    String?   @map("image_url")
+  publishedAt DateTime  @map("published_at")
+  dedupeHash  String    @unique @map("dedupe_hash")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  tags        NewsTag[]
+
+  @@index([publishedAt(sort: Desc)])
+  @@map("news_items")
+}
+
+model NewsTag {
+  id         Int      @id @default(autoincrement())
+  newsItemId Int      @map("news_item_id")
+  teamId     Int?     @map("team_id")
+  playerId   Int?     @map("player_id")
+  newsItem   NewsItem @relation(fields: [newsItemId], references: [id], onDelete: Cascade)
+  team       Team?    @relation(fields: [teamId], references: [id])
+  player     Player?  @relation(fields: [playerId], references: [id])
+
+  @@index([teamId])
+  @@index([playerId])
+  @@map("news_tags")
+}
