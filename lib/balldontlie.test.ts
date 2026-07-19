@@ -15,4 +15,12 @@ describe('mapTeam', () => {
       logoUrl: 'https://a.espncdn.com/i/teamlogos/nba/500/lal.png',
     })
   })
+
+  it('usa slug da ESPN quando difere da sigla', () => {
+    const pelicans: BdlTeam = {
+      id: 19, conference: 'West', division: 'Southwest', city: 'New Orleans',
+      name: 'Pelicans', full_name: 'New Orleans Pelicans', abbreviation: 'NOP',
+    }
+    expect(mapTeam(pelicans).logoUrl).toBe('https://a.espncdn.com/i/teamlogos/nba/500/no.png')
+  })
 })

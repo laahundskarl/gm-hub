@@ -51,6 +51,9 @@ export async function* getActivePlayers(): AsyncGenerator<BdlPlayer[]> {
   } while (cursor)
 }
 
+// ESPN usa slugs próprios para alguns times (verificado: demais 28 batem com a sigla)
+const ESPN_LOGO_SLUGS: Record<string, string> = { NOP: 'no', UTA: 'utah' }
+
 export function mapTeam(t: BdlTeam) {
   return {
     nbaId: t.id,
@@ -59,6 +62,6 @@ export function mapTeam(t: BdlTeam) {
     abbreviation: t.abbreviation,
     conference: t.conference,
     division: t.division,
-    logoUrl: `https://a.espncdn.com/i/teamlogos/nba/500/${t.abbreviation.toLowerCase()}.png`,
+    logoUrl: `https://a.espncdn.com/i/teamlogos/nba/500/${ESPN_LOGO_SLUGS[t.abbreviation] ?? t.abbreviation.toLowerCase()}.png`,
   }
 }
