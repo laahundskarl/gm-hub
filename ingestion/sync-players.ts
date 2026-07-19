@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
-import { getActivePlayers, type BdlPlayer } from '@/lib/balldontlie'
+import { type BdlPlayer } from '@/lib/balldontlie'
+import { getTeamRoster, mapEspnAthlete } from '@/lib/espn'
 
 export function mapPlayer(p: BdlPlayer, teamIdByNbaId: Map<number, number>) {
   return {
@@ -14,18 +15,20 @@ export function mapPlayer(p: BdlPlayer, teamIdByNbaId: Map<number, number>) {
   }
 }
 
+// Fonte operacional: ESPN (grátis) no lugar de balldontlie /players/active (tier pago).
+// getActivePlayers/mapPlayer acima seguem intactos para reversão futura.
 async function main() {
-  const teams = await db.team.findMany({ select: { id: true, nbaId: true } })
-  const teamMap = new Map(teams.map((t) => [t.nbaId, t.id]))
+  const teams = await db.team.findMany({ select: { id: true, abbreviation: true } })
   let count = 0
-  for await (const page of getActivePlayers()) {
-    for (const p of page) {
-      const data = mapPlayer(p, teamMap)
+  for (const team of teams) {
+    const athletes = await getTeamRoster(team.abbreviation)
+    for (const a of athletes) {
+      const data = mapEspnAthlete(a, team.id)
       await db.player.upsert({ where: { nbaId: data.nbaId }, update: data, create: data })
       count++
     }
   }
-  console.log(`sync-players: ${count} jogadores upserted`)
+  console.log(`sync-players: ${count} jogadores upserted (espn)`)
 }
 
 if (process.argv[1]?.endsWith('sync-players.ts')) {

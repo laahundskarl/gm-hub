@@ -1,0 +1,18 @@
+{
+  "athletes": [
+    {
+      "id": "3975",
+      "firstName": "LeBron",
+      "lastName": "James",
+      "jersey": "23",
+      "displayHeight": "6' 9\"",
+      "displayWeight": "250 lbs",
+      "position": { "abbreviation": "F" }
+    },
+    {
+      "id": "5113969",
+      "firstName": "Cameron",
+      "lastName": "Carr"
+    }
+  ]
+}
