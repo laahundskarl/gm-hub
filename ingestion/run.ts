@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import { db } from '@/lib/db'
 import { RSS_FEEDS, fetchRssFeed } from './sources/rss'
 import { fetchRedditNba } from './sources/reddit'
@@ -30,7 +31,8 @@ async function main() {
   const raw = await collect()
   const normalized = raw.map((i) => normalizeItem(i, now)).filter((i) => i !== null)
 
-  const since = new Date(now.getTime() - 7 * 24 * 3600 * 1000)
+  // janela deve exceder o MAX_AGE_MS do normalize (14d), senão reinserções antigas violam dedupe_hash
+  const since = new Date(now.getTime() - 15 * 24 * 3600 * 1000)
   const recent = await db.newsItem.findMany({
     where: { publishedAt: { gte: since } },
     select: { dedupeHash: true, title: true, publishedAt: true },
@@ -45,29 +47,38 @@ async function main() {
   const dict = buildTagDict(teams, players)
 
   let created = 0
+  let skipped = 0
   for (const item of fresh) {
     const { teamIds, playerIds } = tagText(`${item.title} ${item.excerpt ?? ''}`, dict)
-    await db.newsItem.create({
-      data: {
-        source: item.source,
-        externalId: item.externalId,
-        url: item.url,
-        title: item.title,
-        excerpt: item.excerpt,
-        imageUrl: item.imageUrl,
-        publishedAt: item.publishedAt,
-        dedupeHash: dedupeHash(item.url),
-        tags: {
-          create: [
-            ...teamIds.map((teamId) => ({ teamId })),
-            ...playerIds.map((playerId) => ({ playerId })),
-          ],
+    try {
+      await db.newsItem.create({
+        data: {
+          source: item.source,
+          externalId: item.externalId,
+          url: item.url,
+          title: item.title,
+          excerpt: item.excerpt,
+          imageUrl: item.imageUrl,
+          publishedAt: item.publishedAt,
+          dedupeHash: dedupeHash(item.url),
+          tags: {
+            create: [
+              ...teamIds.map((teamId) => ({ teamId })),
+              ...playerIds.map((playerId) => ({ playerId })),
+            ],
+          },
         },
-      },
-    })
-    created++
+      })
+      created++
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+        skipped++
+        continue
+      }
+      throw e
+    }
   }
-  console.log(`ingest: ${raw.length} coletados, ${normalized.length} válidos, ${fresh.length} novos, ${created} gravados`)
+  console.log(`ingest: ${raw.length} coletados, ${normalized.length} válidos, ${fresh.length} novos, ${created} gravados, ${skipped} duplicados ignorados`)
 }
 
 if (process.argv[1]?.includes('run.ts')) {
