@@ -1,5 +1,5 @@
 export interface RawNewsInput {
-  source: string          // 'espn' | 'yahoo' | 'cbs' | 'realgm' | 'reddit'
+  source: string          // 'espn' | 'hoopshype' | 'yahoo' | 'cbs' | 'realgm' | 'reddit'
   externalId?: string
   url: string
   title: string
