@@ -1,9 +1,11 @@
 import { XMLParser } from 'fast-xml-parser'
 import type { RawNewsInput } from '../types'
 
+// hoopshype's RSS was discontinued (404 in all environments); replaced with yahoo + cbs
 export const RSS_FEEDS = [
   { source: 'espn', url: 'https://www.espn.com/espn/rss/nba/news' },
-  { source: 'hoopshype', url: 'https://hoopshype.com/feed/' },
+  { source: 'yahoo', url: 'https://sports.yahoo.com/nba/rss.xml' },
+  { source: 'cbs', url: 'https://www.cbssports.com/rss/headlines/nba/' },
   { source: 'realgm', url: 'https://basketball.realgm.com/rss/wiretap/0/0.xml' },
 ] as const
 
